@@ -1,0 +1,157 @@
+﻿<Window x:Class="TestSitek.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestSitek"
+        mc:Ignorable="d"
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        Title="TestSitek" MinHeight="700" MinWidth="750" Height="700" Width="750">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="RadioButton">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+        </Style>
+        
+    </Window.Resources>
+
+            <Grid>
+        <TabControl>
+            <TabItem Header="Опции">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition MaxWidth="500"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height = "40"/>
+                        <RowDefinition Height = "40"/>
+                        <RowDefinition Height = "40"/>
+                        <RowDefinition Height = "40"/>
+                        <RowDefinition Height = "100"/>
+                        <RowDefinition Height = "40"/>
+                        <RowDefinition Height = "40"/>
+                        <RowDefinition Height = "40"/>
+                        <RowDefinition Height = "40"/>
+                        <RowDefinition MinHeight = "40"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="0"
+                               Text="РКК"/>
+                    <TextBox Grid.Column="1"
+                             Grid.Row="0"
+                             Text="{Binding Path=RkkSource, Mode=OneWay}"/>
+                    <Button Grid.Column="2"
+                            Grid.Row="0"
+                            Content="Обзор"
+                            Command="{Binding Path=RkkSourceButton, Mode=OneWay}"/>
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="1"
+                               Text="Обращения"/>
+                    <TextBox Grid.Column="1"
+                             Grid.Row="1"
+                             Text="{Binding Path=AppealSource, Mode=OneWay}"/>
+                    <Button Grid.Column="2"
+                            Grid.Row="1"
+                            Content="Обзор"
+                            Command="{Binding Path=AppealSourceButton, Mode=OneWay}"/>
+                    <Button Grid.Column="2"
+                            Grid.Row="2"
+                            Content="Открыть"
+                            Command="{Binding Path=OpenButton, Mode=OneWay}"/>
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="4"
+                               VerticalAlignment="Top"
+                               Text="Сортировать по"/>
+                    <StackPanel Grid.Column="1"
+                                Grid.Row="4"
+                                Orientation="Vertical"
+                                VerticalAlignment="Top">
+                        <RadioButton Content="ФИО (А-Я)"
+                                     IsChecked="{Binding Path=SortByFio, Mode=OneWayToSource}"/>
+                        <RadioButton Content="РКК. При равенстве по обращениям (Я-А)"
+                                     IsChecked="{Binding Path=SortByRkk, Mode=OneWayToSource}"/>
+                        <RadioButton Content="Обращениям. При равенстве по РКК (Я-А)"
+                                     IsChecked="{Binding Path=SortByAppeal, Mode=OneWayToSource}" />
+                        <RadioButton Content="Общим документам. При равенстве РКК (Я-А)"
+                                     IsChecked="{Binding Path=SortByTotalCount, Mode=OneWayToSource}"/>
+                    </StackPanel>
+                    <Button Grid.Column="2"
+                            Grid.Row="4"
+                            Content="Сортировать"
+                            Command="{Binding Path=SortButton, Mode=OneWay}"/>
+                    
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="6"
+                               Text="Сохранить"/>
+                    <TextBox Grid.Column="1"
+                             Grid.Row="6"
+                             Text="{Binding Path=SaveSource, Mode=OneWay}"/>
+                    <Button Grid.Column="2"
+                            Grid.Row="6"
+                            Content="Обзор"
+                            Command="{Binding Path=SaveSourceButton, Mode=OneWay}"/>
+
+                    <Button Grid.Column="2"
+                            Grid.Row="7"
+                            Content="Сохранить"
+                            Command="{Binding Path=SaveButton, Mode=OneWay}"/>
+                    
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="9"
+                               VerticalAlignment="Top"
+                               Text="Лог"/>
+                    <ScrollViewer Grid.Column="1"
+                                  Grid.Row="9"
+                                  Margin="5,0,5,5">
+                        <TextBlock VerticalAlignment="Top"
+                               Text="{Binding Path=Log, Mode=OneWay}"/>
+                    </ScrollViewer>
+                    <Button Grid.Column="2"
+                            Grid.Row="9"
+                            Content="Очистить лог"
+                            Command="{Binding Path=ClearLogButton, Mode=OneWay}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Отчет">
+                <DataGrid ItemsSource="{Binding Path=Data, Mode=TwoWay}"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ФИО" 
+                                            MinWidth="150"
+                                            Binding="{Binding Path=FIO, Mode=OneWay}"/>
+                        <DataGridTextColumn Header="РКК" 
+                                            Width="150"
+                                            Binding="{Binding Path=RkkCount, Mode=OneWay}"/>
+                        <DataGridTextColumn Header="Обращения" 
+                                            Width="150"
+                                            Binding="{Binding Path=ApealCount, Mode=OneWay}"/>
+                        <DataGridTextColumn Header="Общее количество" 
+                                            Width="150"
+                                            Binding="{Binding Path=TotalCount, Mode=OneWay}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
